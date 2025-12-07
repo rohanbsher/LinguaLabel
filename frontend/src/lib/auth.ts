@@ -38,6 +38,9 @@ export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
 }
 
+// Alias for consistency
+export const getStoredToken = getToken;
+
 export function setToken(token: string): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(TOKEN_KEY, token);

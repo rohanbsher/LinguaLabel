@@ -17,11 +17,11 @@ export default function ProjectsPage() {
       setUser(storedUser);
 
       try {
-        const [projectsData, languagesData] = await Promise.all([
+        const [projectsResponse, languagesData] = await Promise.all([
           api.getProjects(),
           api.getLanguages(),
         ]);
-        setProjects(projectsData);
+        setProjects(projectsResponse.projects);
         setLanguages(languagesData);
       } catch (error) {
         console.error("Failed to load data:", error);
