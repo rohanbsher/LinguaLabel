@@ -99,6 +99,38 @@ export interface PlatformStats {
   regions: string[];
 }
 
+export interface ConnectStatus {
+  account_id: string | null;
+  is_connected: boolean;
+  charges_enabled: boolean;
+  payouts_enabled: boolean;
+  details_submitted: boolean;
+  requirements_due: string[];
+  message: string;
+}
+
+export interface Earnings {
+  total_earned: number;
+  pending: number;
+  available: number;
+  currency: string;
+}
+
+export interface ConnectOnboardResponse {
+  account_id: string;
+  onboarding_url: string;
+  message: string;
+}
+
+export interface WithdrawResponse {
+  payout_id: string | null;
+  amount: number;
+  currency: string;
+  status: string;
+  estimated_arrival: string | null;
+  message: string;
+}
+
 export interface ApiError {
   detail: string;
 }
@@ -214,6 +246,24 @@ export const api = {
 
   // Stats
   getStats: () => fetchApi<PlatformStats>("/api/stats", { authenticated: false }),
+
+  // Payments
+  getConnectStatus: () => fetchApi<ConnectStatus>("/api/payments/status"),
+  getEarnings: () => fetchApi<Earnings>("/api/payments/earnings"),
+  startConnectOnboarding: (country: string, returnUrl: string, refreshUrl: string) =>
+    fetchApi<ConnectOnboardResponse>("/api/payments/connect/onboard", {
+      method: "POST",
+      body: JSON.stringify({
+        country,
+        return_url: returnUrl,
+        refresh_url: refreshUrl,
+      }),
+    }),
+  requestWithdrawal: (amount: number) =>
+    fetchApi<WithdrawResponse>("/api/payments/withdraw", {
+      method: "POST",
+      body: JSON.stringify({ amount }),
+    }),
 };
 
 export default api;

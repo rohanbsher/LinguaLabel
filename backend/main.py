@@ -17,6 +17,7 @@ from app.core.database import get_db, engine
 from app.models.base import Base
 from app.routers.auth import router as auth_router
 from app.routers.projects import router as projects_router
+from app.routers.payments import router as payments_router
 
 
 @asynccontextmanager
@@ -49,6 +50,7 @@ app.add_middleware(
 # Include routers
 app.include_router(auth_router)
 app.include_router(projects_router)
+app.include_router(payments_router)
 
 
 # =============================================================================
