@@ -1,9 +1,10 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function SignupSuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "annotator";
 
@@ -43,5 +44,21 @@ export default function SignupSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function SuccessLoading() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="text-slate-500">Loading...</div>
+    </div>
+  );
+}
+
+export default function SignupSuccessPage() {
+  return (
+    <Suspense fallback={<SuccessLoading />}>
+      <SuccessContent />
+    </Suspense>
   );
 }
