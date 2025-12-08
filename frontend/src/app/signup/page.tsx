@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { api } from "@/lib/api";
@@ -23,7 +23,7 @@ const PROFICIENCY_LEVELS = [
   { value: "intermediate", label: "Intermediate" },
 ];
 
-export default function SignupPage() {
+function SignupForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialRole = searchParams.get("role") || "annotator";
@@ -506,5 +506,21 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function SignupLoading() {
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
+      <div className="text-slate-500">Loading...</div>
+    </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<SignupLoading />}>
+      <SignupForm />
+    </Suspense>
   );
 }
